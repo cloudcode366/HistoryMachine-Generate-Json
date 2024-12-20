@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        input, textarea, button {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .image-entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>JSON Generator</h1>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter name">
+
+        <label for="audio">Audio:</label>
+        <input type="text" id="audio" placeholder="Enter audio">
+
+        <label for="audioTime">Audio Time:</label>
+        <input type="text" id="audioTime" placeholder="Enter audio time">
+
+        <h2>Images</h2>
+        <div id="images"></div>
+
+        <button id="addImage">Add Image</button>
+
+        <button id="generateJson">Generate JSON</button>
+
+        <h3>Generated JSON:</h3>
+        <textarea id="output" rows="10" readonly></textarea>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const imagesContainer = document.getElementById('images');
+            const addImageButton = document.getElementById('addImage');
+            const generateJsonButton = document.getElementById('generateJson');
+            const output = document.getElementById('output');
+
+            addImageButton.addEventListener('click', () => {
+                const div = document.createElement('div');
+                div.className = 'image-entry';
+                div.innerHTML = `
+                    <label>Image Name:</label>
+                    <input type="text" class="image-name" placeholder="Enter image name">
+
+                    <label>Text:</label>
+                    <input type="text" class="image-text" placeholder="Enter text">
+
+                    <label>Time:</label>
+                    <input type="text" class="image-time" placeholder="Enter time">
+
+                    <button class="removeImage">Remove</button>
+                `;
+                div.querySelector('.removeImage').addEventListener('click', () => {
+                    div.remove();
+                });
+                imagesContainer.appendChild(div);
+            });
+
+            generateJsonButton.addEventListener('click', () => {
+                const name = document.getElementById('name').value;
+                const audio = document.getElementById('audio').value;
+                const audioTime = document.getElementById('audioTime').value;
+                
+                const imageEntries = imagesContainer.querySelectorAll('.image-entry');
+                const images = Array.from(imageEntries).map(entry => {
+                    return {
+                        name: entry.querySelector('.image-name').value,
+                        text: entry.querySelector('.image-text').value,
+                        time: entry.querySelector('.image-time').value
+                    };
+                });
+
+                const json = {
+                    name,
+                    audio,
+                    audioTime,
+                    image: images
+                };
+
+                output.value = JSON.stringify(json, null, 2);
+            });
+        });
+    </script>
+</body>
+</html>
