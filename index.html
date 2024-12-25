@@ -112,6 +112,12 @@
                 };
 
                 output.value = JSON.stringify(json, null, 2);
+
+                // Clear all inputs after generating JSON
+                document.getElementById('name').value = '';
+                document.getElementById('audio').value = '';
+                document.getElementById('audioTime').value = '';
+                imagesContainer.innerHTML = '';
             });
         });
     </script>
