@@ -73,9 +73,9 @@
                 div.className = 'image-entry';
                 div.innerHTML = `
                     <label>Tên ảnh:</label>
-                    <input type="text" class="image-name" placeholder="Nhập tên ảnh">
+                    <input type="text" class="image-name" placeholder="Nhập tên ảnh (không cần đuôi .jpg)">
 
-                    <label>Thông tin ảnh(có thể để trống):</label>
+                    <label>Thông tin ảnh (có thể để trống):</label>
                     <input type="text" class="image-text" placeholder="Nhập thông tin ảnh">
 
                     <label>Thời gian xuất hiện ảnh:</label>
@@ -96,8 +96,9 @@
                 
                 const imageEntries = imagesContainer.querySelectorAll('.image-entry');
                 const images = Array.from(imageEntries).map(entry => {
+                    const imageName = entry.querySelector('.image-name').value;
                     return {
-                        name: entry.querySelector('.image-name').value,
+                        name: imageName.endsWith('.jpg') ? imageName : `${imageName}.jpg`,
                         text: entry.querySelector('.image-text').value,
                         time: entry.querySelector('.image-time').value
                     };
